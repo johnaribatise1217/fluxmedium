@@ -153,5 +153,10 @@ nav{
     gap: 2rem;
     align-items: center;
     justify-content: center;
-    width: 60%;
+    width: 70%;
+}
+
+.text-field span {
+    font-size: 20px;
+    padding-top: 30px;
 }

@@ -4,6 +4,7 @@ import {CiMail} from 'react-icons/ci'
 import '../Pages/LandingPage/Landing.css'
 import {AiFillEyeInvisible} from 'react-icons/ai'
 import {AiFillEye} from 'react-icons/ai'
+import { Link } from 'react-router-dom'
 
 export class Signup extends Component {
   state = {
@@ -95,7 +96,9 @@ export class Signup extends Component {
                             </span>
                         </div>
                         <div className="btn">
-                            <Button color='primary'>Sign Up</Button>
+                            <Link to='/medium'>
+                                <Button color='primary'>Sign Up</Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
