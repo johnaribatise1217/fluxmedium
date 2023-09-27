@@ -10,11 +10,14 @@
     box-sizing: border-box;
 }
 
-body {
+.landing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: linear-gradient(-45deg, #ee7252, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-    height: 90vh;
+    height: 100vh;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -30,12 +33,6 @@ body {
     100% {
         background-position: 0% 50%;
     }
-}
-
-.landing{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 nav{
