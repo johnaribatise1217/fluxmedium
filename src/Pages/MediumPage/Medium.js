@@ -169,7 +169,7 @@ const Articles = (props) => {
                     </div>
                     <div className="bottom">
                         <div className='bef'>
-                            <span className="span">{section}</span>
+                            <span className="span" style={{background : "lightgray", padding : "5px" , borderRadius : "12px", border : "none"}}>{section}</span>
                             <h4>{time}</h4>
                         </div>
                         <div className="actions">
