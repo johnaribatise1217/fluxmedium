@@ -5,6 +5,14 @@ import {FiMenu, FiMoreVertical} from 'react-icons/fi'
 import {BiSearch, BiUser} from 'react-icons/bi'
 import {GrNotification} from 'react-icons/gr'
 import {AiOutlineMail} from 'react-icons/ai'
+import {FaPencil} from 'react-icons/fa6'
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import clsx from 'clsx'
+import Drawer from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -73,14 +81,25 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  list : {
+    width : 300,
+    marginTop : 10
+  },
+  fullList : {
+    width : 'auto'
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: 300,
+      flexShrink: 0,
+    },
+  },
 }));
 
 const MainNavbar = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-    const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const handleProfileMenuOpen = (event) => {
@@ -91,30 +110,9 @@ const MainNavbar = () => {
         setMobileMoreAnchorEl(null);
     };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
-
-    const menuId = 'primary-search-account-menu';
-    const renderMenu = (
-        <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        </Menu>
-    );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -161,14 +159,6 @@ const MainNavbar = () => {
         <div className={classes.grow}>
         <AppBar position="static" style={{background : "white" , color : "black", boxShadow :"none", borderBottom : "1px solid #e8eaf6"}}>
             <Toolbar>
-            {/* <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-            >
-                <FiMenu style={{color : "#9e9e9e"}}/>
-            </IconButton> */}
             <Typography className={classes.title} variant="h6"  noWrap>
                 FluxMedium
             </Typography>
@@ -187,20 +177,18 @@ const MainNavbar = () => {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                    <AiOutlineMail style={{color : "#9e9e9e", marginRight : 10}}/>
-                </Badge>
+                <IconButton color="inherit">
+                    <FaPencil style={{color: "#9e9e9e"}}/>
+                    <h6 style={{color : "#9e9e9e"}}>write</h6>
                 </IconButton>
                 <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                    <GrNotification style={{color : "#9e9e9e", marginRight : 10}}/>
-                </Badge>
+                    <Badge badgeContent={17} color="secondary">
+                        <GrNotification style={{color : "#9e9e9e", marginRight : 10}}/>
+                    </Badge>
                 </IconButton>
                 <IconButton
                 edge="end"
                 aria-label="account of current user"
-                aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="inherit"
@@ -222,7 +210,6 @@ const MainNavbar = () => {
             </Toolbar>
         </AppBar>
         {renderMobileMenu}
-        {renderMenu}
         </div>
     );
 }
