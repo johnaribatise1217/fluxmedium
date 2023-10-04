@@ -1,6 +1,7 @@
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Medium from "./Pages/MediumPage/Medium";
+import Write from "./AddArticle/Write";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes >
         <Route exact path="/" element={<LandingPage/>}/>
         <Route path="/medium" element={<Medium/>} />
+        <Route path="/write" element={<Write/>}/>
       </Routes>
     </BrowserRouter>
   );
