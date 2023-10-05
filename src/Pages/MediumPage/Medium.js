@@ -95,8 +95,8 @@ const Medium = () => {
             <MainNavbar/>
         </div>
         <div className="main">
-            <Container className='container'>
-                <div className='tabs'>
+            <Container className='container' >
+                <div className='tabs' style={{position : "sticky"}}>
                     <AiOutlinePlus style={{fontSize : "2rem", cursor : "pointer"}}/>
                     <Tabs
                         value={value}

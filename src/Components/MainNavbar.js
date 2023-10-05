@@ -6,13 +6,14 @@ import {BiSearch, BiUser} from 'react-icons/bi'
 import {GrNotification} from 'react-icons/gr'
 import {AiOutlineMail} from 'react-icons/ai'
 import {FaPencil} from 'react-icons/fa6'
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import clsx from 'clsx'
-import Drawer from '@material-ui/core';
+import { Link } from 'react-router-dom';
+// import List from '@material-ui/core/List';
+// import Divider from '@material-ui/core/Divider';
+// import ListItem from '@material-ui/core/ListItem';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import clsx from 'clsx'
+// import Drawer from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -159,9 +160,11 @@ const MainNavbar = () => {
         <div className={classes.grow}>
         <AppBar position="static" style={{background : "white" , color : "black", boxShadow :"none", borderBottom : "1px solid #e8eaf6"}}>
             <Toolbar>
-            <Typography className={classes.title} variant="h6"  noWrap>
+            <Link to='/'>
+              <Typography className={classes.title} variant="h6"  noWrap>
                 FluxMedium
-            </Typography>
+              </Typography>
+            </Link>
             <div className={classes.search}>
                 <div className={classes.searchIcon}>
                     <BiSearch style={{color : "#9e9e9e"}}/>
@@ -177,10 +180,12 @@ const MainNavbar = () => {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">
+                <Link to='/write'>
+                  <IconButton color="inherit">
                     <FaPencil style={{color: "#9e9e9e"}}/>
                     <h6 style={{color : "#9e9e9e"}}>write</h6>
-                </IconButton>
+                  </IconButton>
+                </Link>
                 <IconButton aria-label="show 17 new notifications" color="inherit">
                     <Badge badgeContent={17} color="secondary">
                         <GrNotification style={{color : "#9e9e9e", marginRight : 10}}/>

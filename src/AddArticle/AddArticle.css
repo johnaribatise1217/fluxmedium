@@ -1,0 +1,122 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+nav{
+    height: 4rem;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background: #fff;
+}
+
+.nav{
+    border: 1px solid rgb(231, 229, 229);
+}
+
+.nav-cont{
+    width: 85%;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-cont .one {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.one h3{
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(68, 66, 66);
+}
+
+.actions {
+    display: flex;
+    gap: 2rem;
+}
+
+.actions button {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgb(12, 196, 12);
+    color: #fff;
+    font-size: 17px;
+}
+
+.actions button:hover{
+    background: green;
+    transition: all 0.5s ;
+}
+
+.actions > svg {
+    font-size: 1.3rem;
+    color: rgb(99, 97, 97);
+    cursor: pointer;
+}
+
+.write-container{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+}
+
+.article {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 3rem;
+    width: 70%;
+    height: 100vh;
+    margin: 0 auto;
+    border: none;
+    box-sizing: border-box;
+    padding: 3rem 3rem;
+    background: rgba(230, 235, 230, 0.3);
+    margin-bottom: 2rem;
+}
+
+.title textarea{
+    height: 4rem;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+    padding-left: 2rem;
+    background: transparent;
+    resize: none;
+}
+
+.notes {
+    height: 80vh;
+}
+
+.notes textarea {
+    height: 100%;
+    width: 95%;
+    background: transparent;
+    line-height: 2rem;
+    padding: 1rem 3rem 2rem;
+    font-size: 1.3rem;
+}
