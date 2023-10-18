@@ -3,12 +3,18 @@ import './Landing.css'
 import { Container,Typography , Button, Modal, Paper, Fade, Backdrop} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Signup from '../../Components/Signup';
+import SignIn from '../../Components/SignIn';
 
 const LandingPage = () => {
   const [signup, setSignUp] = useState(false)
+  const [signin, setSignIn] = useState(false)
 
   const clickSignUp = () => {
     setSignUp(true)
+  }
+
+  const clickSignIn = () => {
+    setSignIn(true)
   }
 
   return (
@@ -23,7 +29,9 @@ const LandingPage = () => {
                     <li>Our Story</li>
                     <li>Membership</li>
                 </ul>
-                <Button variant='contained' style={{marginRight : 8, color: "hsl(240, 44%, 25%)"}} >Sign In</Button>
+                <Button variant='contained' style={{marginRight : 8, color: "hsl(240, 44%, 25%)"}}
+                    onClick={clickSignIn}
+                >Sign In</Button>
                 <Button onClick={clickSignUp} variant="contained" color="primary">Get Started</Button>
             </div>
         </div> 
@@ -35,7 +43,7 @@ const LandingPage = () => {
         </Typography>
         <Button style={{maxWidth : "30%"}} variant="contained" color="primary" onClick={clickSignUp}>Start Reading.</Button>
       </Container>
-      <ModalSignUp setSignUp={setSignUp} isSignUp={signup}/>
+      <ModalSignUp setSignUp={setSignUp} allowSignIn={clickSignIn} allowSignUp={clickSignUp} isSignUp={signup} setSignIn={setSignIn} isSignIn={signin}/>
     </div>
   )
 }
@@ -65,21 +73,36 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 //wrapper class for our signup and signin
-const ModalSignUp = ({setSignUp, isSignUp}) => {
+const ModalSignUp = ({setSignUp, isSignUp, setSignIn, isSignIn, allowSignIn, allowSignUp}) => {
     const classes = useStyles()
     const [modalStyle] = React.useState(getModalStyle)
 
     const closeModal = () =>{
-        setSignUp(prev => !prev)
+        if(isSignIn){
+            setSignIn(prev => !prev);
+        } else if (isSignUp){
+            setSignUp(prev => !prev)
+        }
     }
 
     const body = (
         <Container>
-            <Fade in={isSignUp}>
-                <Paper elevation={3} variant='outline' square style={modalStyle} className={classes.paper}>
-                    <Signup/>
-                </Paper>
-            </Fade>
+            {
+                isSignUp &&
+                <Fade in={isSignUp}>
+                    <Paper elevation={3} variant='outline' square style={modalStyle} className={classes.paper}>
+                        <Signup changetoSignIn={allowSignIn}/>
+                    </Paper>
+                </Fade>
+            }
+            {
+                isSignIn &&
+                <Fade in={isSignIn}>
+                    <Paper elevation={3} variant='outline' square style={modalStyle} className={classes.paper}>
+                        <SignIn changetoSignUp={allowSignUp}/>
+                    </Paper>
+                </Fade>
+            }
         </Container>
     );
 
@@ -87,14 +110,14 @@ const ModalSignUp = ({setSignUp, isSignUp}) => {
         <>
             <div>
                 <Modal
-                    open={isSignUp}
+                    open={isSignUp || isSignIn}
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     onClose={closeModal}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{
-                    timeout: 1000,
+                    timeout: 2000,
                     }}
                 >
                     {body}
