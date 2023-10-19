@@ -37,6 +37,7 @@ export class Signup extends Component {
 
   render() {
     const {step, email, password, showPassword} = this.state
+    const {changetoSignIn} = this.props
 
     switch(step) {
         case 1:
@@ -49,7 +50,7 @@ export class Signup extends Component {
                         <CiMail/>
                         <Button onClick={this.nextStep} >Sign up with email</Button>
                     </div>
-                    <Typography className='h6' variant='h6'>Already have an account? <span>Sign in</span></Typography>
+                    <Typography className='h6' variant='h6'>Already have an account? <span onClick={changetoSignIn}>Sign in</span></Typography>
                     <Typography className='text'>Click "Sign Up" to agree to FluxMedium's <span>Terms of Service</span> and acknowledge that FluxMedium's <span>Privacy Policy</span> applies to you.</Typography>
                 </div>
             )
@@ -77,7 +78,7 @@ export class Signup extends Component {
             return (
                 <div className="first">
                     <div className="below">
-                        <small>Enter Your password</small>
+                        <h3>Enter Your password</h3>
                         <div className="textfield">
                             <TextField id="standard-password-input" label="Password"
                             type={`${showPassword ? "text" : "password"}`}
@@ -96,7 +97,7 @@ export class Signup extends Component {
                             </span>
                         </div>
                         <div className="btn">
-                            <Link to='/medium'>
+                            <Link to='/'>
                                 <Button color='primary'>Sign Up</Button>
                             </Link>
                         </div>
