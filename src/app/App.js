@@ -1,7 +1,7 @@
-import LandingPage from "./Pages/LandingPage/LandingPage";
+import LandingPage from "../Pages/LandingPage/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Medium from "./Pages/MediumPage/Medium";
-import Write from "./AddArticle/Write";
+import Medium from "../Pages/MediumPage/Medium";
+import Write from "../Pages/ArticlePage/AddArticle/Write";
 
 function App() {
   return (
