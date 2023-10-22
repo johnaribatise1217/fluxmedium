@@ -1,22 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Landing.css'
 import { Container,Typography , Button, Modal, Paper, Fade, Backdrop} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Signup from '../../Components/Signup';
 import SignIn from '../../Components/SignIn';
-import { useDispatch, useSelector } from 'react-redux';
-import { closeView, openSignInView, openSignUpView } from '../../features/auth/authSlice';
 
 const LandingPage = () => {
-    const dispatch = useDispatch()
+  const [signup, setSignUp] = useState(false)
+  const [signin, setSignIn] = useState(false)
 
   const clickSignUp = () => {
-    dispatch(openSignUpView())
-
+    setSignUp(true)
   }
 
   const clickSignIn = () => {
-    dispatch(openSignInView())
+    setSignIn(true)
   }
 
   return (
@@ -45,7 +43,7 @@ const LandingPage = () => {
         </Typography>
         <Button style={{maxWidth : "30%"}} variant="contained" color="primary" onClick={clickSignUp}>Start Reading.</Button>
       </Container>
-      <ModalSignUp/>
+      <ModalSignUp setSignUp={setSignUp} allowSignIn={clickSignIn} allowSignUp={clickSignUp} isSignUp={signup} setSignIn={setSignIn} isSignIn={signin}/>
     </div>
   )
 }
@@ -75,31 +73,33 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 //wrapper class for our signup and signin
-const ModalSignUp = () => {
+const ModalSignUp = ({setSignUp, isSignUp, setSignIn, isSignIn, allowSignIn, allowSignUp}) => {
     const classes = useStyles()
-    const view = useSelector((state)=> state.auth.view)
-    const dispatch = useDispatch()
     const [modalStyle] = React.useState(getModalStyle)
 
     const closeModal = () =>{
-        dispatch(closeView())
+        if(isSignIn){
+            setSignIn(prev => !prev);
+        } else if (isSignUp){
+            setSignUp(prev => !prev)
+        }
     }
 
     const body = (
         <Container>
             {
-                view === 'SIGNUP' &&
-                <Fade in={view === 'SIGNUP'}>
+                isSignUp &&
+                <Fade in={isSignUp}>
                     <Paper elevation={3} variant='outline' square style={modalStyle} className={classes.paper}>
-                        <Signup/>
+                        <Signup changetoSignIn={allowSignIn}/>
                     </Paper>
                 </Fade>
             }
             {
-                view === 'SIGNIN' &&
-                <Fade in={view === 'SIGNIN'}>
+                isSignIn &&
+                <Fade in={isSignIn}>
                     <Paper elevation={3} variant='outline' square style={modalStyle} className={classes.paper}>
-                        <SignIn/>
+                        <SignIn changetoSignUp={allowSignUp}/>
                     </Paper>
                 </Fade>
             }
@@ -110,7 +110,7 @@ const ModalSignUp = () => {
         <>
             <div>
                 <Modal
-                    open={view !== null}
+                    open={isSignUp || isSignIn}
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     onClose={closeModal}

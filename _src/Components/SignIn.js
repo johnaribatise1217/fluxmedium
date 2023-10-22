@@ -1,49 +1,44 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import '../Pages/LandingPage/Landing.css'
 import {AiFillEyeInvisible} from 'react-icons/ai'
 import {AiFillEye} from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { Typography, Button, TextField } from '@material-ui/core'
 import { CiMail } from 'react-icons/ci'
-import { useDispatch } from 'react-redux'
-import { openSignUpView } from '../features/auth/authSlice'
 
-export const  SignIn  = ()=> {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const dispatch = useDispatch()
-  const [state, setState] = useState({
+export class SignIn extends Component {
+  state = {
     step : 1,
     email : "",
     password : "",
     showPassword : false
-  })
-
-  const nextStep = () => {
-    setState((state)=>({
-      ...state,
-      step : state.step + 1
-    }))
   }
 
-  const previousStep = () => {
-    setState((state)=>({
-      ...state,
-      step : state.step - 1
-    }))
+  nextStep = () => {
+    const {step} = this.state
+    this.setState({
+      step : step + 1
+    })
   }
 
-  const clickShowPassword = () => {
-    setState((state)=>({
-      ...state,
-      showPassword: !state.showPassword
-    }))
+  previousStep = () => {
+    const {step}=this.state;
+    this.setState({
+      step : step - 1
+    })
   }
 
-  
-    // const counter = this.props.counter.value
-    const {step, showPassword} = state
-    // eslint-disable-next-line default-case
+  clickShowPassword = () => {
+    const {showPassword} = this.state
+    this.setState({
+      showPassword: !showPassword
+    })
+  }
+
+  render() {
+    const {step, email, password, showPassword} = this.state
+    const {changetoSignUp} = this.props
+    
     switch(step) {
       case 1 :
         return (
@@ -53,9 +48,9 @@ export const  SignIn  = ()=> {
             </div>
             <div className="emailbtn">
                 <CiMail/>
-                <Button onClick={nextStep} >Sign in with email</Button>
+                <Button onClick={this.nextStep} >Sign in with email</Button>
             </div>
-            <Typography className='h6' variant='h6'>No Account? <span onClick={()=> dispatch(openSignUpView())}>Create One</span></Typography>
+            <Typography className='h6' variant='h6'>No Account? <span onClick={changetoSignUp}>Create One</span></Typography>
             <Typography className='text'>Click "Sign In" to agree to FluxMedium's <span>Terms of Service</span> and acknowledge that FluxMedium's <span>Privacy Policy</span> applies to you.</Typography>
             </div>
         )
@@ -68,12 +63,14 @@ export const  SignIn  = ()=> {
               <div className="textfield">
                 <TextField required id="standard-required" label="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => this.setState({
+                  email : e.target.value
+                })}
                 />
               </div>
               </div>
               <div className="btn">
-                <Button color='primary' onClick={nextStep}>Continue</Button>
+                <Button color='primary' onClick={this.nextStep}>Continue</Button>
               </div>
           </div>
         )
@@ -87,11 +84,11 @@ export const  SignIn  = ()=> {
                   type={`${showPassword ? "text" : "password"}`}
                   autoComplete='current-password'
                   value={password}
-                  onChange={(e) => setPassword({
+                  onChange={(e) => this.setState({
                     password : e.target.value
                   })}
                   />
-                  <span className='icon-eye' onClick={clickShowPassword}>
+                  <span className='icon-eye' onClick={this.clickShowPassword}>
                       {showPassword ? 
                         <AiFillEye/>
                         :
@@ -108,6 +105,7 @@ export const  SignIn  = ()=> {
           </div>
         )
     }
+  }
 }
 
 export default SignIn
