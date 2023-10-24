@@ -12,6 +12,7 @@ export const  SignIn  = ()=> {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
+
   const [state, setState] = useState({
     step : 1,
     email : "",
@@ -26,21 +27,12 @@ export const  SignIn  = ()=> {
     }))
   }
 
-  const previousStep = () => {
-    setState((state)=>({
-      ...state,
-      step : state.step - 1
-    }))
-  }
-
   const clickShowPassword = () => {
     setState((state)=>({
       ...state,
       showPassword: !state.showPassword
     }))
   }
-
-  
     // const counter = this.props.counter.value
     const {step, showPassword} = state
     // eslint-disable-next-line default-case
@@ -87,9 +79,7 @@ export const  SignIn  = ()=> {
                   type={`${showPassword ? "text" : "password"}`}
                   autoComplete='current-password'
                   value={password}
-                  onChange={(e) => setPassword({
-                    password : e.target.value
-                  })}
+                  onChange={(e) => setPassword(e.target.value)}
                   />
                   <span className='icon-eye' onClick={clickShowPassword}>
                       {showPassword ? 

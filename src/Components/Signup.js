@@ -1,43 +1,40 @@
 import { Button, TextField, Typography } from '@material-ui/core'
-import React, { Component } from 'react'
+import React, {useState} from 'react'
 import {CiMail} from 'react-icons/ci'
 import '../Pages/LandingPage/Landing.css'
 import {AiFillEyeInvisible} from 'react-icons/ai'
 import {AiFillEye} from 'react-icons/ai'
 import { Link } from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import { openSignInView, closeView } from '../features/auth/authSlice'
 
-export class Signup extends Component {
-  state = {
-    step : 1,
-    email : "",
-    password : "",
-    showPassword : false
-  }
+export const Signup = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const dispatch = useDispatch()
 
-  nextStep = () => {
-    const {step} = this.state
-    this.setState({
-        step : step + 1
+    const [state, setState] = useState({
+        step : 1,
+        email : "",
+        password : "",
+        showPassword : false
     })
-  }
 
-  previousStep = () => {
-    const {step}=this.state;
-    this.setState({
-        step : step - 1
-    })
-  }
+    const nextStep = () => {
+        setState((state) => ({
+            ...state, 
+            step : state.step + 1
+        }))
+    }
 
-  clickShowPassword = () => {
-    const {showPassword} = this.state
-    this.setState({
-        showPassword: !showPassword
-    })
-  }
+    const clickShowPassword = () => {
+        setState((state) => ({
+            ...state,
+            showPassword: !state.showPassword
+        }))
+    }
 
-  render() {
-    const {step, email, password, showPassword} = this.state
-    const {changetoSignIn} = this.props
+    const {step, showPassword} = state
 
     switch(step) {
         case 1:
@@ -48,9 +45,11 @@ export class Signup extends Component {
                     </div>
                     <div className="emailbtn">
                         <CiMail/>
-                        <Button onClick={this.nextStep} >Sign up with email</Button>
+                        <Button onClick={nextStep}>Sign up with email</Button>
                     </div>
-                    <Typography className='h6' variant='h6'>Already have an account? <span onClick={changetoSignIn}>Sign in</span></Typography>
+                    <Typography className='h6' variant='h6'>Already have an account? <span onClick={() => 
+                        dispatch(openSignInView())
+                    }>Sign in</span></Typography>
                     <Typography className='text'>Click "Sign Up" to agree to FluxMedium's <span>Terms of Service</span> and acknowledge that FluxMedium's <span>Privacy Policy</span> applies to you.</Typography>
                 </div>
             )
@@ -63,14 +62,12 @@ export class Signup extends Component {
                         <div className="textfield">
                             <TextField required id="standard-required" label="Email"
                             value={email}
-                            onChange={(e) => this.setState({
-                                email : e.target.value
-                            })}
+                            onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                     </div>
                     <div className="btn">
-                        <Button color='primary' onClick={this.nextStep}>Continue</Button>
+                        <Button color='primary' onClick={nextStep}>Continue</Button>
                     </div>
                 </div>
             )
@@ -84,11 +81,11 @@ export class Signup extends Component {
                             type={`${showPassword ? "text" : "password"}`}
                             autoComplete='current-password'
                             value={password}
-                            onChange={(e) => this.setState({
-                                password : e.target.value
-                            })}
+                            onChange={(e) => setPassword(e.target.value)}
                             />
-                            <span className='icon-eye' onClick={this.clickShowPassword}>
+                            <span className='icon-eye'
+                                onClick={clickShowPassword}
+                            >
                                 {showPassword ? 
                                     <AiFillEye/>
                                     :
@@ -97,7 +94,7 @@ export class Signup extends Component {
                             </span>
                         </div>
                         <div className="btn">
-                            <Link to='/'>
+                            <Link to='/' onClick={() => dispatch(closeView())}>
                                 <Button color='primary'>Sign Up</Button>
                             </Link>
                         </div>
@@ -105,7 +102,6 @@ export class Signup extends Component {
                 </div>
             )
     }
-  }
 }
 
 export default Signup
