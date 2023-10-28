@@ -64,4 +64,22 @@ export class Result {
     return this.#result
   }
 
+  /**
+   * 
+   * @param {any} result 
+   * @param {string?} fallbackMessage 
+   * @returns {string?}
+   */
+  static getMessage(result, fallbackMessage) {
+    if(result == null ) return fallbackMessage
+    if( typeof result !=='object')  return fallbackMessage
+
+    if(typeof result.message === 'string'){
+      return result.message
+    }
+
+    if(typeof result.error?.message === 'string'){
+      return result.error.message
+    }
+  }
 }

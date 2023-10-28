@@ -2,21 +2,21 @@ import React, { useState } from 'react'
 import '../Pages/LandingPage/Landing.css'
 import {AiFillEyeInvisible} from 'react-icons/ai'
 import {AiFillEye} from 'react-icons/ai'
-import { Link } from 'react-router-dom'
-import { Typography, Button, TextField } from '@material-ui/core'
+import { useNavigate } from 'react-router-dom'
+import { Typography, Button, TextField, CircularProgress } from '@material-ui/core'
 import { CiMail } from 'react-icons/ci'
-import { useDispatch } from 'react-redux'
-import { openSignUpView } from '../features/auth/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, openSignUpView } from '../features/auth/authSlice'
 
 export const  SignIn  = ()=> {
+  const auth = useSelector((state) => state.auth)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [state, setState] = useState({
     step : 1,
-    email : "",
-    password : "",
     showPassword : false
   })
 
@@ -90,9 +90,7 @@ export const  SignIn  = ()=> {
                   </span>
                 </div>
                 <div className="btn">
-                  <Link to='/medium'>
-                    <Button color='primary'>Sign In</Button>
-                  </Link>
+                  <Button disabled={auth.isSubmitting} onClick={ ()=> dispatch(login({password, identifier: email}, navigate))} color='primary'>{auth.isSubmitting?(<CircularProgress />):'Sign In'}</Button>
                 </div>
             </div>
           </div>
