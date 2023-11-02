@@ -48,6 +48,8 @@ export const { openSignInView, openSignUpView, closeView, setSubmitting, _login,
  * @returns 
  */
 export const logout = (payload, navigate ) => async (dispatch, getState)=> {
+  // import { useAlert } from 'react-alert'
+  // const alert = useAlert()
   const state = getState().auth
   if(state.isSubmitting) return
   dispatch(setSubmitting(true))
@@ -56,7 +58,10 @@ export const logout = (payload, navigate ) => async (dispatch, getState)=> {
   const result = await authService.logout(_cachedJwt)
   if(result.notOk){
     // TODO: add a snackbar to show message
-    if(result.message) alert(result.message)
+    if(result.message){
+       alert(result.message)
+      //  alert.show(result.message)
+    }
     dispatch(setSubmitting(false))
     return 
   }
