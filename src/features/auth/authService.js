@@ -67,6 +67,7 @@ export class AuthService {
    }
 
    async logout(jwt){
+      return Result.ok({}, 'Logout successful')
    }
 
    async register({ username, password }){
