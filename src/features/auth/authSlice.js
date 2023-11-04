@@ -27,23 +27,12 @@ export const authSlice = createSlice({
     setSubmitting: (state, action) => {
       state.isSubmitting = action.payload
     },
-    _logout: async(state) =>{
-      const authService = new AuthService()
-      state.isSubmitting = true
-      const _cachedJwt =   sessionStorage.getItem('jwt')
-      if(_cachedJwt){
-        // user not loggedIn 
-        state.isSubmitting = false
-        return 
-      }
-      await authService.logout(_cachedJwt)
-      state.isSubmitting = false
+    _logout: (state, action) =>{
       state.user = null
       sessionStorage.removeItem('jwt')
       sessionStorage.removeItem('user')
     },
     _login: (state, action) => {
-      state.isSubmitting = false
       state.user = action.payload.user
       sessionStorage.setItem('jwt',  action.payload.jwt)
       sessionStorage.setItem('user', JSON.stringify(action.payload.user))
@@ -59,6 +48,35 @@ export const { openSignInView, openSignUpView, closeView, setSubmitting, _login,
  * @param {import('react-router-dom').NavigateFunction} navigate 
  * @returns 
  */
+export const logout = (payload, navigate ) => async (dispatch, getState)=> {
+  // import { useAlert } from 'react-alert'
+  // const alert = useAlert()
+  const state = getState().auth
+  if(state.isSubmitting) return
+  dispatch(setSubmitting(true))
+  const authService = new AuthService()
+  const _cachedJwt = sessionStorage.getItem('jwt')
+  const result = await authService.logout(_cachedJwt)
+  if(result.notOk){
+    // TODO: add a snackbar to show message
+    if(result.message){
+       alert(result.message)
+      //  alert.show(result.message)
+    }
+    dispatch(setSubmitting(false))
+    return 
+  }
+  dispatch(_logout(result.result))
+  dispatch(setSubmitting(false))
+  navigate('/')
+}
+
+/**
+ * 
+ * @param {*} payload 
+ * @param {import('react-router-dom').NavigateFunction} navigate 
+ * @returns 
+ */
 export const login = (payload, navigate ) => async (dispatch, getState)=> {
   const state = getState().auth
   if(state.isSubmitting) return
@@ -68,10 +86,11 @@ export const login = (payload, navigate ) => async (dispatch, getState)=> {
   if(result.notOk){
     // TODO: add a snackbar to show message
     if(result.message) alert(result.message)
-    state.isSubmitting = false
+    dispatch(setSubmitting(false))
     return 
   }
   dispatch(_login(result.result))
+  dispatch(setSubmitting(false))
   navigate('/medium')
 }
 
