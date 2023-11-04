@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { AuthService } from './authService'
 const _cachedUser =   sessionStorage.getItem('user')
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -73,4 +74,5 @@ export const login = (payload, navigate ) => async (dispatch, getState)=> {
   dispatch(_login(result.result))
   navigate('/medium')
 }
+
 export default authSlice.reducer
