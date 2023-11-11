@@ -153,7 +153,25 @@ nav{
     width: 70%;
 }
 
-.text-field span {
-    font-size: 20px;
-    padding-top: 30px;
+.textfield {
+    display: flex;
+    align-items: center;
+}
+
+.icon-eye {
+    cursor: pointer;
+}
+
+.first .snackbar {
+    display: block;
+    width: 25%;
+    height: 2rem;
+    border-radius: 10px;
+    background: white;
+}
+
+.below .text-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 }

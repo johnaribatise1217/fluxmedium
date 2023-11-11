@@ -12,7 +12,6 @@ const LandingPage = () => {
 
   const clickSignUp = () => {
     dispatch(openSignUpView())
-
   }
 
   const clickSignIn = () => {

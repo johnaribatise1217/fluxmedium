@@ -3,10 +3,11 @@ import '../Pages/LandingPage/Landing.css'
 import {AiFillEyeInvisible} from 'react-icons/ai'
 import {AiFillEye} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import { Typography, Button, TextField, CircularProgress } from '@material-ui/core'
+import { Typography, Button, TextField, CircularProgress, makeStyles, Snackbar } from '@material-ui/core'
 import { CiMail } from 'react-icons/ci'
 import { useDispatch, useSelector } from 'react-redux'
-import { login, openSignUpView } from '../features/auth/authSlice'
+import { login, openSignUpView, closeView} from '../features/auth/authSlice'
+import Alert from '@material-ui/lab/Alert'
 
 export const  SignIn  = ()=> {
   const auth = useSelector((state) => state.auth)
@@ -24,6 +25,13 @@ export const  SignIn  = ()=> {
     setState((state)=>({
       ...state,
       step : state.step + 1
+    }))
+  }
+
+  const prevStep = () => {
+    setState((state) => ({
+      ...state,
+      step : state.step - 1
     }))
   }
 
@@ -72,6 +80,12 @@ export const  SignIn  = ()=> {
       case 3 : 
         return (
           <div className="first">
+            <div className="snackbar">
+              {auth.hasErrorMessage && auth.errorMessage !== null ?
+                <DisplayErrorSnackBar message={auth.errorMessage}/> : 
+                <div></div>
+              }
+            </div>
             <div className="below">
                 <h3>Enter Your password</h3>
                 <div className="textfield">
@@ -91,11 +105,43 @@ export const  SignIn  = ()=> {
                 </div>
                 <div className="btn">
                   <Button disabled={auth.isSubmitting} onClick={ ()=> dispatch(login({password, identifier: email}, navigate))} color='primary'>{auth.isSubmitting?(<CircularProgress />):'Sign In'}</Button>
+                  <Button color='default' onClick={prevStep}>Go Back</Button>
                 </div>
             </div>
           </div>
         )
     }
+}
+
+const DisplayErrorSnackBar = ({message}) => {
+  const view = useSelector((state) => state.auth.view)
+  const dispatch = useDispatch()
+
+  const hideShowSnackBar = (reason) => {
+    if(reason === 'clickaway'){
+      return
+    }
+    dispatch(closeView())
+  }
+
+  return (
+    <div className='snack'>
+      <Snackbar
+        anchorOrigin={{
+          vertical : 'bottom',
+          horizontal : 'center'
+        }}
+        open={view === 'SNACKBAR'}
+        autoHideDuration={6000}
+        onClose={hideShowSnackBar}
+        message={message}
+      >
+        <Alert onClose={hideShowSnackBar} elevation={6} variant='filled' severity='error'>
+          {message}
+        </Alert>
+      </Snackbar>
+    </div>
+  )
 }
 
 export default SignIn

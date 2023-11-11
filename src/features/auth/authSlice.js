@@ -7,7 +7,10 @@ export const authSlice = createSlice({
   initialState: {
     view: null,
     user: _cachedUser? JSON.parse(_cachedUser): null,
-    isSubmitting: false
+    isSubmitting: false,
+    userName : null,
+    hasErrorMessage : false,
+    errorMessage : null
   },
   reducers: {
     openSignUpView: (state) => {
@@ -21,13 +24,25 @@ export const authSlice = createSlice({
     openSignInView: (state) => {
       state.view = 'SIGNIN'
     },
+    openSnackBar : (state) => {
+      state.view = 'SNACKBAR'
+    },
     closeView: (state) => {
       state.view = null
     },
     setSubmitting: (state, action) => {
       state.isSubmitting = action.payload
     },
-    _logout: (state, action) =>{
+    setHasErrorMessage : (state,action) => {
+      state.hasErrorMessage = action.payload
+    },
+    setErrorMessage : (state, action) => {
+      state.errorMessage = action.payload
+    },
+    setUserName : (state , action) => {
+      state.userName = action.payload
+    },
+    _logout: (state) =>{
       state.user = null
       sessionStorage.removeItem('jwt')
       sessionStorage.removeItem('user')
@@ -41,7 +56,7 @@ export const authSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { openSignInView, openSignUpView, closeView, setSubmitting, _login, _logout } = authSlice.actions
+export const { openSignInView, openSignUpView, closeView, setSubmitting, _login, _logout, openSnackBar, setErrorMessage, setHasErrorMessage, setUserName } = authSlice.actions
 /**
  * 
  * @param {*} payload 
@@ -60,7 +75,6 @@ export const logout = (payload, navigate ) => async (dispatch, getState)=> {
   if(result.notOk){
     // TODO: add a snackbar to show message
     if(result.message){
-       alert(result.message)
       //  alert.show(result.message)
     }
     dispatch(setSubmitting(false))
@@ -85,7 +99,12 @@ export const login = (payload, navigate ) => async (dispatch, getState)=> {
   const result = await authService.login(payload)
   if(result.notOk){
     // TODO: add a snackbar to show message
-    if(result.message) alert(result.message)
+    if(result.message){
+      //alert(result.message)
+      dispatch(setHasErrorMessage(true))
+      dispatch(setErrorMessage(result.message))
+      dispatch(openSnackBar())
+    }
     dispatch(setSubmitting(false))
     return 
   }

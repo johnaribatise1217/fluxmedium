@@ -4,20 +4,22 @@ import {CiMail} from 'react-icons/ci'
 import '../Pages/LandingPage/Landing.css'
 import {AiFillEyeInvisible} from 'react-icons/ai'
 import {AiFillEye} from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch} from 'react-redux'
-import { openSignInView, closeView } from '../features/auth/authSlice'
+import { openSignInView, closeView, setUserName} from '../features/auth/authSlice'
 
 export const Signup = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [firstName , setFirstName] = useState('')
+    const [lastName , setLastName] = useState('')
     const dispatch = useDispatch()
 
     const [state, setState] = useState({
         step : 1,
         email : "",
         password : "",
-        showPassword : false
+        showPassword : false,
     })
 
     const nextStep = () => {
@@ -32,6 +34,12 @@ export const Signup = () => {
             ...state,
             showPassword: !state.showPassword
         }))
+    }
+
+    const storeUserName = () => {
+        const userName = `${firstName} ${lastName}`
+        dispatch(setUserName(userName))
+        dispatch(closeView())
     }
 
     const {step, showPassword} = state
@@ -59,10 +67,18 @@ export const Signup = () => {
                     <Typography variant='h4'>Sign up with email</Typography>
                     <div className="below">
                         <small>Your email</small>
-                        <div className="textfield">
+                        <div className="text-field">
                             <TextField required id="standard-required" label="Email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value) }
+                            />
+                            <TextField required id="standard-required" label="First Name"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            />
+                            <TextField required id="standard-required" label="Last Name"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
                             />
                         </div>
                     </div>
@@ -94,7 +110,7 @@ export const Signup = () => {
                             </span>
                         </div>
                         <div className="btn">
-                            <Link to='/' onClick={() => dispatch(closeView())}>
+                            <Link to='/' onClick={() => storeUserName()}>
                                 <Button color='primary'>Sign Up</Button>
                             </Link>
                         </div>

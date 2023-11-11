@@ -1,19 +1,13 @@
 import React from 'react'
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import {AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu } from '@material-ui/core';
+import {AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button } from '@material-ui/core';
 import {FiMenu, FiMoreVertical} from 'react-icons/fi'
 import {BiSearch, BiUser} from 'react-icons/bi'
 import {GrNotification} from 'react-icons/gr'
 import {AiOutlineMail} from 'react-icons/ai'
 import {FaPencil} from 'react-icons/fa6'
-import { Link } from 'react-router-dom';
-// import List from '@material-ui/core/List';
-// import Divider from '@material-ui/core/Divider';
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import clsx from 'clsx'
-// import Drawer from '@material-ui/core';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -100,61 +94,13 @@ const useStyles = makeStyles((theme) => ({
 const MainNavbar = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const auth = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleProfileMenuOpen = (event) => {
       setAnchorEl(event.currentTarget);
     };
-
-    const handleMobileMenuClose = () => {
-      setMobileMoreAnchorEl(null);
-    };
-
-    const handleMobileMenuOpen = (event) => {
-      setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    // const renderMobileMenu = (
-    //     <Menu
-    //     anchorEl={mobileMoreAnchorEl}
-    //     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //     id={mobileMenuId}
-    //     keepMounted
-    //     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //     open={isMobileMenuOpen}
-    //     onClose={handleMobileMenuClose}
-    //     >
-    //     <MenuItem>
-    //         <IconButton aria-label="show 4 new mails" color="inherit">
-    //         <Badge badgeContent={4} color="secondary">
-    //             <AiOutlineMail style={{color : "#9e9e9e"}}/>
-    //         </Badge>
-    //         </IconButton>
-    //         <p>Messages</p>
-    //     </MenuItem>
-    //     <MenuItem>
-    //         <IconButton aria-label="show 11 new notifications" color="inherit">
-    //         <Badge badgeContent={11} color="secondary">
-    //             <GrNotification style={{color : "#9e9e9e"}}/>
-    //         </Badge>
-    //         </IconButton>
-    //         <p>Notifications</p>
-    //     </MenuItem>
-    //     <MenuItem onClick={handleProfileMenuOpen}>
-    //         <IconButton
-    //         aria-label="account of current user"
-    //         aria-controls="primary-search-account-menu"
-    //         aria-haspopup="true"
-    //         color="inherit"
-    //         >
-    //             <BiUser style={{color : "#9e9e9e"}}/>
-    //         </IconButton>
-    //         <p>Profile</p>
-    //     </MenuItem>
-    //     </Menu>
-    // );
 
     return (
         <div className={classes.grow}>
@@ -179,7 +125,11 @@ const MainNavbar = () => {
                 />
             </div>
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
+            <div className={classes.sectionDesktop} style={{
+              display:'flex',
+              alignItems:"center",
+              gap : '1rem'
+            }}>
                 <Link to='/write'>
                   <IconButton color="inherit">
                     <FaPencil style={{color: "#9e9e9e"}}/>
@@ -198,24 +148,30 @@ const MainNavbar = () => {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
                 >
-                    <BiUser style={{color : "#9e9e9e", marginRight : 12}}/>
+                  <BiUser style={{color : "#9e9e9e", marginRight : 12}}/>
                 </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-                <IconButton
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-                >
-                  <FiMoreVertical style={{color : "#9e9e9e"}}/>
-                </IconButton>
+                <Button color='primary'>
+                  Logout
+                </Button>
+                <Typography variant='h6'>
+                  {
+                    auth.user ? 
+                      <div className="welcome"
+                        style={{
+                          fontFamily : 'tahoma',
+                          fontWeight: '200',
+                          color : 'grey'
+                        }}
+                      >
+                        <h5>Welcome</h5>
+                        <h6>{auth.userName}</h6>
+                      </div> : ''
+                  }
+                </Typography>
             </div>
             </Toolbar>
         </AppBar>
-        {/* {renderMobileMenu} */}
-        </div>
+      </div>
     );
 }
 
